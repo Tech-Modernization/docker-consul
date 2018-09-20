@@ -2,7 +2,8 @@ FROM alpine:3.7
 MAINTAINER Preetha Appan <preetha@hashicorp.com> (@preetapan)
 
 # This is the release of Consul to pull in.
-ENV CONSUL_VERSION=1.2.3
+ARG CONSUL_VERSION
+ENV CONSUL_VERSION=$CONSUL_VERSION
 
 # Create a consul user and group first so the IDs get set the same way, even as
 # the rest of this may change over time.
