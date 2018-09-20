@@ -23,12 +23,15 @@ RUN set -eux && \
         x86_64) consulArch='amd64' ;; \
         *) echo >&2 "error: unsupported architecture: ${apkArch} (see https://releases.hashicorp.com/consul/${CONSUL_VERSION}/)" && exit 1 ;; \
     esac && \
-    wget https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_linux_${consulArch}.zip && \
-    wget https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_SHA256SUMS && \
-    wget https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_SHA256SUMS.sig && \
-    gpg --batch --verify consul_${CONSUL_VERSION}_SHA256SUMS.sig consul_${CONSUL_VERSION}_SHA256SUMS && \
-    grep consul_${CONSUL_VERSION}_linux_${consulArch}.zip consul_${CONSUL_VERSION}_SHA256SUMS | sha256sum -c && \
-    unzip -d /bin consul_${CONSUL_VERSION}_linux_${consulArch}.zip && \
+    wget -O consul-enterprise_${CONSUL_VERSION}+ent_linux_${consulArch}.zip \
+		https://s3-us-west-2.amazonaws.com/hc-enterprise-binaries/consul/ent/${CONSUL_VERSION}/consul-enterprise_${CONSUL_VERSION}%2Bent_linux_${consulArch}.zip && \
+    wget -O consul-enterprise_${CONSUL_VERSION}+ent_SHA256SUMS \
+		https://s3-us-west-2.amazonaws.com/hc-enterprise-binaries/consul/ent/${CONSUL_VERSION}/consul-enterprise_${CONSUL_VERSION}%2Bent_SHA256SUMS && \
+    wget -O consul-enterprise_${CONSUL_VERSION}+ent_SHA256SUMS.sig \
+		https://s3-us-west-2.amazonaws.com/hc-enterprise-binaries/consul/ent/${CONSUL_VERSION}/consul-enterprise_${CONSUL_VERSION}%2Bent_SHA256SUMS.sig && \
+    gpg --batch --verify consul-enterprise_${CONSUL_VERSION}+ent_SHA256SUMS.sig consul-enterprise_${CONSUL_VERSION}+ent_SHA256SUMS && \
+    grep consul-enterprise_${CONSUL_VERSION}+ent_linux_${consulArch}.zip consul-enterprise_${CONSUL_VERSION}+ent_SHA256SUMS | sha256sum -c && \
+    unzip -d /bin consul-enterprise_${CONSUL_VERSION}+ent_linux_${consulArch}.zip && \
     cd /tmp && \
     rm -rf /tmp/build && \
     apk del gnupg openssl && \

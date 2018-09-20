@@ -10,3 +10,27 @@ There are several pieces that are used to build this image:
   the container can access Atlas features as well.
 * Finally a specific Consul build is fetched and the rest of the Consul-specific
   configuration happens according to the Dockerfile.
+
+
+## Adaptations for Enterprise
+
+The following documents the changes necessary for Consul.
+
+
+#### URLs
+
+* Linux: https://s3-us-west-2.amazonaws.com/hc-enterprise-binaries/consul/ent/1.2.3/consul-enterprise_1.2.3%2Bent_linux_amd64.zip
+* Checksums: https://s3-us-west-2.amazonaws.com/hc-enterprise-binaries/consul/ent/1.2.3/consul-enterprise_1.2.3%2Bent_SHA256SUMS
+* Signature: https://s3-us-west-2.amazonaws.com/hc-enterprise-binaries/consul/ent/1.2.3/consul-enterprise_1.2.3%2Bent_SHA256SUMS.sig
+
+#### Licensing
+
+The Consul license will need to be applied within 30 minutes of startup.
+
+    curl \
+      --request PUT \
+      --data @consul.license \
+      http://127.0.0.1:8500/v1/operator/license
+
+* https://www.consul.io/docs/enterprise/index.html#licensing
+* https://www.consul.io/api/operator/license.html
